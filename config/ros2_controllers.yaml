@@ -1,0 +1,70 @@
+# This config file is used by ros2_control
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    arm_0_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    arm_1_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    arm_0_gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    arm_1_gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+arm_0_controller:
+  ros__parameters:
+    joints:
+      - arm_0_shoulder_pan_joint
+      - arm_0_shoulder_lift_joint
+      - arm_0_elbow_joint
+      - arm_0_wrist_1_joint
+      - arm_0_wrist_2_joint
+      - arm_0_wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+arm_1_controller:
+  ros__parameters:
+    joints:
+      - arm_1_shoulder_pan_joint
+      - arm_1_shoulder_lift_joint
+      - arm_1_elbow_joint
+      - arm_1_wrist_1_joint
+      - arm_1_wrist_2_joint
+      - arm_1_wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+arm_0_gripper_controller:
+  ros__parameters:
+    joints:
+      - arm_0_gripper_robotiq_85_left_knuckle_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+arm_1_gripper_controller:
+  ros__parameters:
+    joints:
+      - arm_1_gripper_robotiq_85_left_knuckle_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity

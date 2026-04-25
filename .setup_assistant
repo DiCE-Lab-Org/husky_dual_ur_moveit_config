@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: husky_description
+    relative_path: urdf/robot.urdf.xacro
+  srdf:
+    relative_path: config/a200_0876.srdf
+  package_settings:
+    author_name: behrad
+    author_email: Bbeheshtishira7627@sdsu.edu
+    generated_timestamp: 1777151843
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
