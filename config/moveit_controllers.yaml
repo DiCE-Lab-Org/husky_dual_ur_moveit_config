@@ -11,6 +11,8 @@ moveit_simple_controller_manager:
 
   arm_0_controller:
     type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
     joints:
       - arm_0_shoulder_pan_joint
       - arm_0_shoulder_lift_joint
@@ -18,8 +20,11 @@ moveit_simple_controller_manager:
       - arm_0_wrist_1_joint
       - arm_0_wrist_2_joint
       - arm_0_wrist_3_joint
+
   arm_1_controller:
     type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
     joints:
       - arm_1_shoulder_pan_joint
       - arm_1_shoulder_lift_joint
@@ -27,11 +32,17 @@ moveit_simple_controller_manager:
       - arm_1_wrist_1_joint
       - arm_1_wrist_2_joint
       - arm_1_wrist_3_joint
+
   arm_0_gripper_controller:
     type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
     joints:
       - arm_0_gripper_robotiq_85_left_knuckle_joint
+
   arm_1_gripper_controller:
     type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
     joints:
       - arm_1_gripper_robotiq_85_left_knuckle_joint

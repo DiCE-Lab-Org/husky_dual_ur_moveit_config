@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="a200_0876">
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+    <xacro:arg name="use_ros2_control" default="false" />
 
     <!-- Import a200_0876 urdf file -->
     <xacro:include filename="$(find husky_description)/urdf/robot.urdf.xacro" />
