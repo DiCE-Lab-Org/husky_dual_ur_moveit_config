@@ -1,4 +1,6 @@
 # husky_dual_ur_moveit_config
+![MoveIt motion planning](docs/moveit.gif)
+
 
 MoveIt 2 configuration for the Clearpath Husky A200-0876 with dual UR5e arms and Robotiq 2F-85 grippers.
 
