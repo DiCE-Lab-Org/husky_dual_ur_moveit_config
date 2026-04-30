@@ -19,6 +19,10 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
 
 
+    neck_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
@@ -63,6 +67,17 @@ arm_1_gripper_controller:
   ros__parameters:
     joints:
       - arm_1_gripper_robotiq_85_left_knuckle_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+neck_controller:
+  ros__parameters:
+    joints:
+      - tilt_0_tilt_joint
+      - pan_0_pan_joint
     command_interfaces:
       - position
     state_interfaces:

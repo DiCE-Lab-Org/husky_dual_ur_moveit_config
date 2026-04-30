@@ -6,10 +6,11 @@
     <!-- Import a200_0876 urdf file -->
     <xacro:include filename="$(find husky_description)/urdf/robot.urdf.xacro" />
 
-    <!-- Import control_xacro -->
+    <!-- Import mock control xacro for arms + grippers -->
     <xacro:include filename="a200_0876.ros2_control.xacro" />
-
-
     <xacro:a200_0876_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
 
+    <!-- Import neck pan/tilt control (dynamixel_hardware in dummy mode by default) -->
+    <xacro:include filename="$(find husky_description)/urdf/control/neck_ros2_control.xacro" />
+    <xacro:neck_ros2_control name="neck_dynamixels"/>
 </robot>
