@@ -11,6 +11,13 @@
     <xacro:a200_0876_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
 
     <!-- Import neck pan/tilt control (dynamixel_hardware in dummy mode by default) -->
+    <xacro:arg name="use_dummy" default="true"/>
+    <xacro:arg name="usb_port" default="/dev/ttyUSB0"/>
+    <xacro:arg name="baud_rate" default="57600"/>
+
     <xacro:include filename="$(find husky_description)/urdf/control/neck_ros2_control.xacro" />
-    <xacro:neck_ros2_control name="neck_dynamixels"/>
+    <xacro:neck_ros2_control name="neck_dynamixels"
+                            use_dummy="$(arg use_dummy)"
+                            usb_port="$(arg usb_port)"
+                            baud_rate="$(arg baud_rate)"/>
 </robot>
