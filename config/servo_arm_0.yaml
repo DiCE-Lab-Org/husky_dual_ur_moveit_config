@@ -1,0 +1,91 @@
+###############################################################
+# servo_arm_0.yaml
+#
+# MoveIt Servo configuration for the left arm (arm_0).
+# Tuned for VR teleoperation: high publish rate, low latency,
+# Cartesian twist input from arm_teleop_node.
+#
+# Modeled on /opt/ros/humble/share/moveit_servo/config/panda_simulated_config.yaml
+# but adapted for our dual-UR5e setup.
+###############################################################
+
+###############################################################
+# Settings for what command type we accept and where it goes.
+###############################################################
+# Use TwistStamped (Cartesian velocity) commands as the primary input.
+# Joint commands are also accepted on a separate topic but unused for VR.
+move_group_name: arm_0
+planning_frame: base_link
+ee_frame_name: arm_0_tool0          # End-effector frame; twists default to this frame if header.frame_id is empty.
+robot_link_command_frame: arm_0_tool0
+status_topic: ~/status               # Publishes Servo status enum
+joint_command_in_topic: ~/delta_joint_cmds      # control_msgs/JointJog
+cartesian_command_in_topic: ~/delta_twist_cmds  # geometry_msgs/TwistStamped
+joint_topic: /joint_states           # We get joint state here
+command_out_topic: /arm_0_controller/commands
+command_out_type: std_msgs/Float64MultiArray
+publish_joint_positions: true
+publish_joint_velocities: false      # JTC takes positions; setting velocities causes redundancy issues
+publish_joint_accelerations: false
+
+###############################################################
+# Velocity / acceleration scaling and rates.
+# These directly impact teleop feel.
+###############################################################
+# Servo's internal control loop rate.
+# Higher = lower latency response to incoming twists, more CPU.
+# 200 Hz is the sweet spot for VR teleop on UR5e-class arms.
+publish_period: 0.005   # seconds between Servo command outputs (1 / 200 Hz)
+low_pass_filter_coeff: 2.0  # Higher = more smoothing, more lag. 2.0 is moderate.
+
+# Linear / angular speed limits for incoming twists.
+# command_in_type "speed_units" means the input is m/s (linear) and rad/s (angular).
+command_in_type: speed_units
+scale:
+  linear: 0.6     # Max linear velocity (m/s) when input is at scale=1.0
+  rotational: 1.5 # Max angular velocity (rad/s)
+  # joint scale not used for Cartesian input
+  joint: 0.6
+
+# How long without a new command before Servo halts the arm (safety).
+# 0.5s lets the relay recover from brief gaps without the arm coasting.
+incoming_command_timeout: 0.5
+
+# How many incoming command samples Servo averages before issuing a joint command.
+# Lower = more responsive, more jittery. 1 is fine if input is already smooth.
+num_outgoing_halt_msgs_to_publish: 4
+
+# When stopping, smoothly decelerate to zero rather than abrupt halt.
+halt_all_joints_in_joint_mode: true
+halt_all_joints_in_cartesian_mode: true
+
+###############################################################
+# Singularity and joint-limit handling.
+# These tune how "mushy" the arm feels near workspace boundaries.
+###############################################################
+# When we approach a singularity, slow down to avoid runaway joint velocity.
+lower_singularity_threshold: 17.0   # Start slowing down here
+hard_stop_singularity_threshold: 30.0 # Hard stop at this point
+joint_limit_margin: 0.1             # Stop this many radians from joint limits
+leaving_singularity_threshold_multiplier: 2.0
+
+###############################################################
+# Collision checking.
+# Servo can pause if it detects an impending self-collision or
+# environment collision. Costs CPU but is a safety win.
+# For VR teleop in mock mode without real obstacles, can disable.
+###############################################################
+check_collisions: false
+collision_check_rate: 10.0   # Hz; Servo does collision check at this rate (lower than control loop)
+self_collision_proximity_threshold: 0.01
+scene_collision_proximity_threshold: 0.02
+collision_distance_safety_factor: 1000.0
+min_allowable_collision_distance: 0.01
+
+###############################################################
+# Smoothing plugin.
+# Helps when input commands are bursty or jittery.
+# Butterworth is the default; AccelerationLimited respects joint accel limits.
+###############################################################
+use_smoothing: true
+smoothing_filter_plugin_name: "online_signal_smoothing::ButterworthFilterPlugin"
